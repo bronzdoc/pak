@@ -1,4 +1,4 @@
-package api
+package pak
 
 import (
 	"github.com/jhoonb/archivex"
