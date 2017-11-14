@@ -1,0 +1,6 @@
+hash: 5504a555067b1b60817543ccf55122cf95d0605c3a3465b2a2190d1b97611293
+updated: 2017-11-14T10:21:50.12856045-06:00
+imports:
+- name: github.com/jhoonb/archivex
+  version: be4efa7ec0c38ab76d56037014c90d48d6b13037
+testImports: []
