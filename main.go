@@ -1,10 +1,9 @@
 package main
 
 import (
-	"github.com/bronzdoc/pak/api"
+	"github.com/bronzdoc/pak/cmd"
 )
 
 func main() {
-	pakfile := api.Parse("pakfile.json")
-	api.Build(&pakfile)
+	cmd.Execute()
 }
