@@ -3,10 +3,11 @@ package api
 import (
 	"fmt"
 
+	pak "github.com/bronzdoc/pak/pakfile"
 	"github.com/jhoonb/archivex"
 )
 
-func Build(pakfile *PakFile) {
+func Build(pakfile *pak.PakFile) {
 	artifact := new(archivex.TarFile)
 	artifact.Create(pakfile.ArtifactName)
 
