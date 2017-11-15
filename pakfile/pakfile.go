@@ -31,6 +31,7 @@ func New(jsonPath string) *PakFile {
 
 	pakfile.parseArtifactName()
 	pakfile.parseMetadata()
+	pakfile.parsePath()
 
 	if pakfile.ArtifactName == "" {
 		// Build random artifact name if not given
@@ -80,6 +81,24 @@ func (p *PakFile) parseArtifactName() {
 		}
 
 		p.ArtifactName = os.Getenv(envVar)
+	}
+}
+
+func (p *PakFile) parsePath() {
+	nameIsEnvVar, err := match(p.Path, `^\${.+}`)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	if nameIsEnvVar {
+		envVar, err := search(p.Path, `\w+`)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		p.Path = os.Getenv(envVar)
 	}
 }
 
