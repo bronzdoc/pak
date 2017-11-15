@@ -1,3 +1,5 @@
 package: github.com/bronzdoc/pak
 import:
 - package: github.com/jhoonb/archivex
+- package: github.com/spf13/cobra
+  version: ^0.0.1

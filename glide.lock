@@ -1,6 +1,8 @@
-hash: 5504a555067b1b60817543ccf55122cf95d0605c3a3465b2a2190d1b97611293
-updated: 2017-11-14T10:21:50.12856045-06:00
+hash: d753f7f37878bf44c81edd1a5b9b30314e1566e9659421e39740b805c5dfc197
+updated: 2017-11-14T22:21:49.443935208-06:00
 imports:
 - name: github.com/jhoonb/archivex
   version: be4efa7ec0c38ab76d56037014c90d48d6b13037
+- name: github.com/spf13/cobra
+  version: 7b2c5ac9fc04fc5efafb60700713d4fa609b777b
 testImports: []
