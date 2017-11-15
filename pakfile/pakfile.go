@@ -14,7 +14,7 @@ type PakFile struct {
 	Metadata     map[string]string `json:"metadata"`
 }
 
-func NewPakFile(jsonPath string) *PakFile {
+func New(jsonPath string) *PakFile {
 	if _, err := os.Stat(jsonPath); err != nil {
 		fmt.Println(err)
 	}
