@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"os"
 	"regexp"
+	"time"
 )
 
 type PakFile struct {
@@ -29,6 +31,12 @@ func New(jsonPath string) *PakFile {
 
 	pakfile.parseArtifactName()
 	pakfile.parseMetadata()
+
+	if pakfile.ArtifactName == "" {
+		// Build random artifact name if not given
+		rand.Seed(int64(time.Now().Nanosecond()))
+		pakfile.ArtifactName = fmt.Sprintf("pak-artifact.%d", rand.Int())
+	}
 
 	return &pakfile
 }
@@ -58,10 +66,6 @@ func (p *PakFile) parseMetadata() {
 }
 
 func (p *PakFile) parseArtifactName() {
-	if len(p.ArtifactName) <= 0 {
-		// Build random name
-	}
-
 	nameIsEnvVar, err := match(p.ArtifactName, `^\${.+}`)
 	if err != nil {
 		fmt.Println(err)
