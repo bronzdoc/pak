@@ -1,4 +1,4 @@
-package pak
+package pakfile
 
 import (
 	"encoding/json"
