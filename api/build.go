@@ -9,7 +9,7 @@ import (
 
 func Build(pakfile *pak.PakFile) {
 	artifact := new(archivex.TarFile)
-	artifact.Create(pakfile.ArtifactName)
+	artifact.Create(fmt.Sprintf("%s.tar.gz", pakfile.ArtifactName))
 
 	// Store metadata in the package
 	for key, value := range pakfile.Metadata {
