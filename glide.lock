@@ -1,5 +1,5 @@
-hash: b4457bfb4a693c97056022f223f7ec180a0a19ec8f607eca64bf1e7c7cc5a5af
-updated: 2017-11-15T21:58:40.039027141-06:00
+hash: 54ab360918bcc88080c69f3c00e9f9f371a07772ec00e0ab23b907588e6512b2
+updated: 2017-11-16T10:51:03.776126063-06:00
 imports:
 - name: github.com/fsnotify/fsnotify
   version: 4da3e2cfbabc9f751898f250b49f2439785783a1
@@ -22,6 +22,10 @@ imports:
   version: 49d762b9817ba1c2e9d0c69183c2b4a8b8f1d934
 - name: github.com/mitchellh/mapstructure
   version: 06020f85339e21b2478f756a78e295255ffa4d6a
+- name: github.com/onsi/ginkgo
+  version: 9eda700730cba42af70d53180f9dcce9266bc2bc
+  subpackages:
+  - ginkgo
 - name: github.com/pelletier/go-toml
   version: 4e9e0ee19b60b13eb79915933f44d8ed5f268bdd
 - name: github.com/pkg/errors
@@ -50,5 +54,5 @@ imports:
   - transform
   - unicode/norm
 - name: gopkg.in/yaml.v2
-  version: eb3733d160e74a9c7e442f435eb3bea458e1d19f
+  version: 287cf08546ab5e7e37d55a84f7ed3fd1db036de5
 testImports: []

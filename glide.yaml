@@ -5,3 +5,7 @@ import:
   version: ^0.0.1
 - package: github.com/pkg/errors
   version: ^0.8.0
+- package: github.com/onsi/ginkgo
+  version: ^1.4.0
+  subpackages:
+  - ginkgo
