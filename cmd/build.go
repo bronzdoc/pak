@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/bronzdoc/pak/api"
 	"github.com/bronzdoc/pak/pakfile"
 	"github.com/spf13/cobra"
@@ -11,7 +14,12 @@ var buildCmd = &cobra.Command{
 	Use:   "build",
 	Short: "build a pak package",
 	Run: func(cmd *cobra.Command, args []string) {
-		pakfile := pakfile.New("pakfile.json")
+		pakfile, err := pakfile.Factory()
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
 		api.Build(pakfile)
 	},
 }
