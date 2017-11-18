@@ -25,12 +25,12 @@ var _ = Describe("Build", func() {
 
 	AfterEach(func() {
 		os.Remove("./tmp/test_pac")
-		os.Remove("pak-test-artifact.tar.gz")
+		os.Remove("pak-test-artifact.tar")
 	})
 
 	It("should build a pak package", func() {
 		api.Build(pakFile)
-		_, err := os.Stat("pak-test-artifact.tar.gz")
+		_, err := os.Stat("pak-test-artifact.tar")
 		Expect(os.IsNotExist(err)).To(Equal(false))
 	})
 })
