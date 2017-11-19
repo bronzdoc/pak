@@ -27,7 +27,12 @@ func Factory() (*PakFile, error) {
 		return pakfile, errors.Wrap(err, "Pakfile.json not found in the current directory")
 	}
 
-	pakfile = New(jsonPakfile)
+	pakfileContent, err := ioutil.ReadFile(jsonPakfile)
+	if err != nil {
+		errors.Wrap(err, "failed to read Pakfile.json")
+	}
+
+	pakfile = New(pakfileContent)
 
 	if err := pakfile.GetData(); err != nil {
 		return pakfile, errors.Wrap(err, "pakfile failed to get data")
@@ -36,18 +41,12 @@ func Factory() (*PakFile, error) {
 	return pakfile, nil
 }
 
-func New(jsonPath string) *PakFile {
-	if _, err := os.Stat(jsonPath); err != nil {
-		fmt.Println(err)
-	}
-
-	jsonContent, err := ioutil.ReadFile(jsonPath)
-	if err != nil {
-		fmt.Println(err)
-	}
-
+func New(jsonString []byte) *PakFile {
 	pakfile := PakFile{}
-	json.Unmarshal(jsonContent, &pakfile)
+
+	if err := json.Unmarshal(jsonString, &pakfile); err != nil {
+		panic(errors.Wrap(err, "failed to unmarshal Pakfile.json content"))
+	}
 
 	return &pakfile
 }
