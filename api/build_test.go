@@ -1,7 +1,9 @@
 package api_test
 
 import (
+	"archive/tar"
 	"fmt"
+	"io/ioutil"
 
 	"github.com/bronzdoc/pak/api"
 	"github.com/bronzdoc/pak/pakfile"
@@ -24,7 +26,9 @@ var _ = Describe("Build", func() {
 		pakFile.ArtifactName = artifactName
 		pakFile.Path = testDir
 		pakFile.Metadata = map[string]string{
-			"key": "value",
+			"key1": "value1",
+			"key2": "value2",
+			"key3": "value3",
 		}
 	})
 
@@ -37,5 +41,33 @@ var _ = Describe("Build", func() {
 		api.Build(pakFile)
 		_, err := os.Stat(fmt.Sprintf("%s.tar", artifactName))
 		Expect(os.IsNotExist(err)).To(Equal(false))
+	})
+
+	It("should create a pak.metadata inside the package", func() {
+		metadataFileName := "pak.metadata"
+		api.Build(pakFile)
+
+		pkg, _ := os.Open(fmt.Sprintf("%s.tar", artifactName))
+
+		tr := tar.NewReader(pkg)
+
+		// Search for the metadata file inside the package
+		metadataFileExist := func() bool {
+			for {
+				header, _ := tr.Next()
+				if header == nil {
+					return false
+				}
+
+				if header.Name == metadataFileName {
+					return true
+				}
+			}
+		}()
+
+		content, _ := ioutil.ReadAll(tr)
+
+		Expect(metadataFileExist).To(BeTrue())
+		Expect(string(content)).To(Equal("key1=value1\nkey2=value2\nkey3=value3\n"))
 	})
 })
