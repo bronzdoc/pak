@@ -13,9 +13,10 @@ import (
 )
 
 type PakFile struct {
-	ArtifactName string            `json:"artifact_name"`
-	Path         string            `json:"path"`
-	Metadata     map[string]string `json:"metadata"`
+	ArtifactName string                                  `json:"artifact_name"`
+	Path         string                                  `json:"path"`
+	Metadata     map[string]string                       `json:"metadata"`
+	Promote      map[string]map[string]map[string]string `json:"promote"`
 }
 
 func Factory() (*PakFile, error) {
