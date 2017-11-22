@@ -21,7 +21,16 @@ var inspectCmd = &cobra.Command{
 
 		artifactName := args[0]
 
-		metadata, err := api.Inspect(artifactName)
+		var label string
+		if len(args) > 1 {
+			label = args[1]
+		}
+
+		options := map[string]string{
+			"label": label,
+		}
+
+		metadata, err := api.Inspect(artifactName, options)
 		if err != nil {
 			fmt.Println(errors.Wrap(err, "could not inspect metadata"))
 			os.Exit(1)

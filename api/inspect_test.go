@@ -27,14 +27,18 @@ var _ = Describe("Inspect", func() {
 		artifact := new(archivex.TarFile)
 		artifact.Create(fmt.Sprintf("%s/%s", testDir, artifactName))
 
-		keyValPair := "key=value"
-		artifact.Add("pak.metadata", []byte(keyValPair))
+		jsonString := `{"key":"value"}`
+		artifact.Add("pak.metadata", []byte(jsonString))
 
 		artifact.Close()
 
-		content, err := Inspect(fmt.Sprintf("%s/%s", testDir, artifactName))
+		content, err := Inspect(
+			fmt.Sprintf("%s/%s", testDir, artifactName),
+			map[string]string{},
+		)
+
 		Expect(err).To(BeNil())
-		Expect(content).To(Equal("key=value"))
+		Expect(content).To(Equal(`{"key":"value"}`))
 	})
 
 	Context("when no metadata found ", func() {
@@ -43,7 +47,11 @@ var _ = Describe("Inspect", func() {
 			artifact.Create(fmt.Sprintf("%s/%s", testDir, artifactName))
 			artifact.Close()
 
-			content, err := Inspect(fmt.Sprintf("%s/%s", testDir, artifactName))
+			content, err := Inspect(
+				fmt.Sprintf("%s/%s", testDir, artifactName),
+				map[string]string{},
+			)
+
 			Expect(err.Error()).To(Equal("no metadata found"))
 			Expect(content).To(Equal(""))
 		})
