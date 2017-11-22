@@ -67,7 +67,15 @@ var _ = Describe("Build", func() {
 
 		content, _ := ioutil.ReadAll(tr)
 
+		expectedContent := `{
+  "build": {
+    "key1": "value1",
+    "key2": "value2",
+    "key3": "value3"
+  }
+}`
 		Expect(metadataFileExist).To(BeTrue())
-		Expect(string(content)).To(Equal("key1=value1\nkey2=value2\nkey3=value3\n"))
+		//Expect(string(content)).To(Equal("key1=value1\nkey2=value2\nkey3=value3\n"))
+		Expect(string(content)).To(Equal(expectedContent))
 	})
 })
