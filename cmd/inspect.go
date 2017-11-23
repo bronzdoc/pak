@@ -9,6 +9,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var isKeyValFlag bool
+
 // inspectCmd represents the inspect command
 var inspectCmd = &cobra.Command{
 	Use:   "inspect",
@@ -26,8 +28,9 @@ var inspectCmd = &cobra.Command{
 			label = args[1]
 		}
 
-		options := map[string]string{
-			"label": label,
+		options := map[string]interface{}{
+			"label":      label,
+			"is_key_val": isKeyValFlag,
 		}
 
 		metadata, err := api.Inspect(artifactName, options)
@@ -51,6 +54,6 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// inspectCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	inspectCmd.Flags().BoolVarP(&isKeyValFlag, "key-value", "", false, "sho inspect output as a KEY=VALUE pair")
 
 }
