@@ -29,8 +29,8 @@ var inspectCmd = &cobra.Command{
 		}
 
 		options := map[string]interface{}{
-			"label":      label,
-			"is_key_val": isKeyValFlag,
+			"label":        label,
+			"is_key_value": isKeyValFlag,
 		}
 
 		metadata, err := api.Inspect(artifactName, options)

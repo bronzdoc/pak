@@ -42,7 +42,7 @@ var _ = Describe("Inspect", func() {
 		Expect(content).To(Equal(`{"key":"value"}`))
 	})
 
-	Context("when is_key_val options is passed", func() {
+	Context("when is_key_value options is passed", func() {
 		It("should return content as key value pair", func() {
 			artifact := new(archivex.TarFile)
 			artifact.Create(fmt.Sprintf("%s/%s", testDir, artifactName))
@@ -53,7 +53,7 @@ var _ = Describe("Inspect", func() {
 			artifact.Close()
 
 			options := map[string]interface{}{
-				"is_key_val": true,
+				"is_key_value": true,
 			}
 
 			content, err := Inspect(

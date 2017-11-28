@@ -55,7 +55,7 @@ func Inspect(packageName string, options map[string]interface{}) (string, error)
 	if label, ok := options["label"]; ok && label != "" {
 		filteredMetadata := filterContentByLabel(mapContent, label.(string))
 
-		if isKeyVal, ok := options["is_key_val"]; ok && isKeyVal.(bool) {
+		if isKeyVal, ok := options["is_key_value"]; ok && isKeyVal.(bool) {
 			var metadata []byte
 
 			for key, value := range filteredMetadata {
@@ -75,7 +75,7 @@ func Inspect(packageName string, options map[string]interface{}) (string, error)
 	}
 
 	// Inspect all metadata
-	if isKeyVal, ok := options["is_key_val"]; ok && isKeyVal.(bool) {
+	if isKeyVal, ok := options["is_key_value"]; ok && isKeyVal.(bool) {
 		var metadata []byte
 
 		for key, value := range mapContent {
