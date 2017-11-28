@@ -46,33 +46,62 @@ func Inspect(packageName string, options map[string]interface{}) (string, error)
 		return "", fmt.Errorf("no metadata found")
 	}
 
+	var mapContent map[string]interface{}
+	if err := json.Unmarshal(content, &mapContent); err != nil {
+		return "", errors.Wrap(err, "failed to unmarshal content")
+	}
+
 	// check if we need to inspect only subset of the metadata
-	if value, ok := options["label"]; ok && value != "" {
-		var mapContent map[string]map[string]string
-
-		label := value.(string)
-
-		json.Unmarshal(content, &mapContent)
-
-		metadata := mapContent[label]
+	if label, ok := options["label"]; ok && label != "" {
+		filteredMetadata := filterContentByLabel(mapContent, label.(string))
 
 		if isKeyVal, ok := options["is_key_val"]; ok && isKeyVal.(bool) {
-			var content []byte
+			var metadata []byte
 
-			for key, value := range metadata {
-				str := fmt.Sprintf("%s=%s\n", key, value)
-				content = append(content, str...)
+			for key, value := range filteredMetadata {
+				str := fmt.Sprintf("%s=\"%s\"\n", key, value)
+				metadata = append(metadata, str...)
 			}
 
-			return string(content), nil
+			return string(metadata), nil
 		} else {
-			content, err := json.MarshalIndent(metadata, "", "  ")
+			metadata, err := json.MarshalIndent(filteredMetadata, "", "  ")
 			if err != nil {
-				panic(err)
+				return "", errors.Wrap(err, "failded to marshal metadata")
 			}
-			return string(content), nil
+
+			return string(metadata), nil
 		}
 	}
 
-	return string(content), nil
+	// Inspect all metadata
+	if isKeyVal, ok := options["is_key_val"]; ok && isKeyVal.(bool) {
+		var metadata []byte
+
+		for key, value := range mapContent {
+			str := fmt.Sprintf("# %s\n", key)
+			metadata = append(metadata, str...)
+			switch value.(type) {
+			default:
+				return "", errors.Wrap(fmt.Errorf("Pakfile.json error"), "invalid Pakfile.json")
+			case map[string]interface{}:
+				for key, v := range value.(map[string]interface{}) {
+					str := fmt.Sprintf("%s=\"%s\"\n", key, v)
+					metadata = append(metadata, str...)
+				}
+			}
+		}
+
+		return string(metadata), nil
+	} else {
+		return string(content), nil
+	}
+}
+
+func filterContentByLabel(metadata map[string]interface{}, label string) map[string]interface{} {
+	if _, ok := metadata[label]; ok {
+		return metadata[label].(map[string]interface{})
+	}
+
+	return make(map[string]interface{})
 }

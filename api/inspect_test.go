@@ -32,24 +32,74 @@ var _ = Describe("Inspect", func() {
 
 		artifact.Close()
 
+		var options map[string]interface{}
 		content, err := Inspect(
 			fmt.Sprintf("%s/%s", testDir, artifactName),
-			map[string]string{},
+			options,
 		)
 
 		Expect(err).To(BeNil())
 		Expect(content).To(Equal(`{"key":"value"}`))
 	})
 
-	Context("when no metadata found ", func() {
+	Context("when is_key_val options is passed", func() {
+		It("should return content as key value pair", func() {
+			artifact := new(archivex.TarFile)
+			artifact.Create(fmt.Sprintf("%s/%s", testDir, artifactName))
+
+			jsonString := `{"label":{"key":"value"}}`
+			artifact.Add("pak.metadata", []byte(jsonString))
+
+			artifact.Close()
+
+			options := map[string]interface{}{
+				"is_key_val": true,
+			}
+
+			content, err := Inspect(
+				fmt.Sprintf("%s/%s", testDir, artifactName),
+				options,
+			)
+
+			Expect(err).To(BeNil())
+			Expect(content).To(Equal("# label\nkey=\"value\"\n"))
+		})
+	})
+
+	Context("when a specific metadata label is given", func() {
+		It("should inspect only inspect only a subset of the metadata", func() {
+			artifact := new(archivex.TarFile)
+			artifact.Create(fmt.Sprintf("%s/%s", testDir, artifactName))
+
+			jsonString := `{"label":{"key":"value"}, "test_label":{"test_key":"test_value"}}`
+			artifact.Add("pak.metadata", []byte(jsonString))
+
+			artifact.Close()
+
+			options := map[string]interface{}{
+				"label": "test_label",
+			}
+
+			content, err := Inspect(
+				fmt.Sprintf("%s/%s", testDir, artifactName),
+				options,
+			)
+
+			Expect(err).To(BeNil())
+			Expect(content).To(Equal("{\n  \"test_key\": \"test_value\"\n}"))
+		})
+	})
+
+	Context("when no metadata found", func() {
 		It("should return the correct error message", func() {
 			artifact := new(archivex.TarFile)
 			artifact.Create(fmt.Sprintf("%s/%s", testDir, artifactName))
 			artifact.Close()
 
+			var options map[string]interface{}
 			content, err := Inspect(
 				fmt.Sprintf("%s/%s", testDir, artifactName),
-				map[string]string{},
+				options,
 			)
 
 			Expect(err.Error()).To(Equal("no metadata found"))
