@@ -59,8 +59,16 @@ func Inspect(packageName string, options map[string]interface{}) (string, error)
 			var metadata []byte
 
 			for key, value := range filteredMetadata {
-				str := fmt.Sprintf("%s=\"%s\"\n", key, value)
-				metadata = append(metadata, str...)
+				switch value.(type) {
+				default:
+					str := fmt.Sprintf("%s=\"%s\"\n", key, value)
+					metadata = append(metadata, str...)
+				case map[string]interface{}:
+					for k, v := range value.(map[string]interface{}) {
+						str := fmt.Sprintf("%s=\"%s\"\n", k, v)
+						metadata = append(metadata, str...)
+					}
+				}
 			}
 
 			return string(metadata), nil
@@ -79,15 +87,23 @@ func Inspect(packageName string, options map[string]interface{}) (string, error)
 		var metadata []byte
 
 		for key, value := range mapContent {
-			str := fmt.Sprintf("# %s\n", key)
+			str := fmt.Sprintf("#%s\n", key)
 			metadata = append(metadata, str...)
 			switch value.(type) {
 			default:
 				return "", errors.Wrap(fmt.Errorf("Pakfile.json error"), "invalid Pakfile.json")
 			case map[string]interface{}:
 				for key, v := range value.(map[string]interface{}) {
-					str := fmt.Sprintf("%s=\"%s\"\n", key, v)
-					metadata = append(metadata, str...)
+					switch v.(type) {
+					default:
+						str := fmt.Sprintf("  %s=\"%s\"\n", key, v)
+						metadata = append(metadata, str...)
+					case map[string]interface{}:
+						for k, v1 := range v.(map[string]interface{}) {
+							str := fmt.Sprintf("  %s=\"%s\"\n", k, v1)
+							metadata = append(metadata, str...)
+						}
+					}
 				}
 			}
 		}

@@ -62,7 +62,7 @@ var _ = Describe("Inspect", func() {
 			)
 
 			Expect(err).To(BeNil())
-			Expect(content).To(Equal("# label\nkey=\"value\"\n"))
+			Expect(content).To(Equal("#label\n  key=\"value\"\n"))
 		})
 	})
 
