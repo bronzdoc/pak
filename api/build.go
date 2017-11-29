@@ -13,21 +13,17 @@ func Build(pakfile *pak.PakFile) {
 	artifact.Create(fmt.Sprintf("%s.tar", pakfile.ArtifactName))
 
 	var metadataContent []byte
-	buildMetadata := make(map[string]string)
 
-	for key, value := range pakfile.Metadata {
-		buildMetadata[key] = value
-	}
-
-	labels := map[string]map[string]string{
-		"build": buildMetadata,
+	labels := map[string]map[string]interface{}{
+		"build": map[string]interface{}{
+			"name":     pakfile.ArtifactName,
+			"metadata": pakfile.Metadata,
+		},
 	}
 
 	// Get labels and metadata from the Promote map
-	for key, metadata := range pakfile.Promote {
-		for _, value := range metadata {
-			labels[key] = value
-		}
+	for key, value := range pakfile.Promote {
+		labels[key] = value
 	}
 
 	jsonString, err := json.MarshalIndent(labels, "", "  ")
