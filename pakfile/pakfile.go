@@ -6,17 +6,17 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"os"
-	"regexp"
 	"time"
 
+	"github.com/bronzdoc/pak/util"
 	"github.com/pkg/errors"
 )
 
 type PakFile struct {
-	ArtifactName string                                  `json:"artifact_name"`
-	Path         string                                  `json:"path"`
-	Metadata     map[string]string                       `json:"metadata"`
-	Promote      map[string]map[string]map[string]string `json:"promote"`
+	ArtifactName string                            `json:"artifact_name"`
+	Path         string                            `json:"path"`
+	Metadata     map[string]string                 `json:"metadata"`
+	Promote      map[string]map[string]interface{} `json:"promote"`
 }
 
 func Factory() (*PakFile, error) {
@@ -74,38 +74,25 @@ func (p *PakFile) GetMetadata() error {
 	}
 
 	for key, value := range p.Metadata {
-		valueIsEnvVar, err := match(value, `^\${.+}`)
+		newValue, err := util.ResolveEnvVar(value)
 		if err != nil {
-			return errors.Wrap(err, "could not match value")
+			return errors.Wrapf(err, "failed to resolve env var \"%s\"", value)
 		}
 
-		if valueIsEnvVar {
-			envVar, err := search(value, `\w+`)
-			if err != nil {
-				return errors.Wrap(err, "could not search value")
-			}
-
-			p.Metadata[key] = os.Getenv(envVar)
-		}
+		p.Metadata[key] = newValue
 	}
 
 	return nil
 }
 
 func (p *PakFile) GetArtifactName() error {
-	nameIsEnvVar, err := match(p.ArtifactName, `^\${.+}`)
+	// If artifact name is an env var, resolve it
+	newArtifactName, err := util.ResolveEnvVar(p.ArtifactName)
 	if err != nil {
-		return errors.Wrap(err, "could not match value")
+		return errors.Wrapf(err, "failed to resolve env var \"%s\"", p.ArtifactName)
 	}
 
-	if nameIsEnvVar {
-		envVar, err := search(p.ArtifactName, `\w+`)
-		if err != nil {
-			return errors.Wrap(err, "could not search value")
-		}
-
-		p.ArtifactName = os.Getenv(envVar)
-	}
+	p.ArtifactName = newArtifactName
 
 	// Check if no artifact name was given
 	if p.ArtifactName == "" {
@@ -118,43 +105,19 @@ func (p *PakFile) GetArtifactName() error {
 }
 
 func (p *PakFile) GetPath() error {
-	// Check if path was given
+	// If path is an env var, resolve it
+	newPath, err := util.ResolveEnvVar(p.Path)
+	if err != nil {
+		return errors.Wrapf(err, "failed to resolve env var \"%s\"", p.ArtifactName)
+	}
+
+	p.Path = newPath
+
+	// Check if path is empty
 	if p.Path == "" {
 		// pak can't build an artifact if no build path is given
-		return fmt.Errorf("Path can not be empty")
-	}
-
-	nameIsEnvVar, err := match(p.Path, `^\${.+}`)
-	if err != nil {
-		return errors.Wrap(err, "could not match value")
-	}
-
-	if nameIsEnvVar {
-		envVar, err := search(p.Path, `\w+`)
-		if err != nil {
-			return errors.Wrap(err, "could not search value")
-		}
-
-		p.Path = os.Getenv(envVar)
+		return fmt.Errorf("path can not be empty")
 	}
 
 	return nil
-}
-
-func match(str, pattern string) (bool, error) {
-	regex, err := regexp.Compile(pattern)
-	if err != nil {
-		return false, errors.Wrap(err, "failed to compile regex pattern")
-	}
-
-	return regex.MatchString(str), nil
-}
-
-func search(str, pattern string) (string, error) {
-	regex, err := regexp.Compile(pattern)
-	if err != nil {
-		return "", errors.Wrap(err, "failed to compile regex pattern")
-	}
-
-	return regex.FindString(str), nil
 }
