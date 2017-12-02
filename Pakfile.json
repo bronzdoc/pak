@@ -1,0 +1,25 @@
+{
+  "artifact_name": "${ARTIFACT_NAME}",
+  "path": "test",
+  "metadata": {
+      "metadata_var": "${TEST_VAR}",
+      "metadata_var1": "${TEST_VAR}",
+      "metadata_var2": "${TEST_VAR}",
+      "metadata_var3": "${TEST_VAR}"
+    },
+
+    "promote": {
+      "release_candidate":{
+        "name": "RELEASE_CANDIDATE",
+        "metadata": {
+          "alpha_var": "${TEST_VAR}"
+        }
+      },
+
+      "pro_candidate":{
+        "metadata": {
+          "prod_var": "some var"
+        }
+      }
+    }
+}
