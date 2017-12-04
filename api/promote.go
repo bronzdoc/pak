@@ -13,6 +13,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Promote will promote the artifact to a given promote label
 func Promote(artifactName string, options map[string]interface{}) error {
 	inspectOptions := map[string]interface{}{}
 
