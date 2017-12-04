@@ -1,0 +1,61 @@
+language: go
+sudo: required
+notifications:
+  email: true
+go:
+  - 1.9
+  - tip
+before_install:
+  - sudo add-apt-repository ppa:masterminds/glide -y
+  - sudo apt-get update -q
+  - sudo apt-get install glide -y
+  - glide install
+install:
+  - go get github.com/golang/lint/golint
+script:
+  - make fmt
+  - make lint
+  - make vet
+  - make test
+  - make release
+deploy:
+  provider: releases
+  api_key:
+    secure: IO7Tikwz/dbrLCCLGBNWxkpINK8HjE87pP6/k//DStUdsjbWCCeR/ViHjMmyJtLtJmYiaCFXMgIuqpCRC3ZjRWWeQGw6Wbmfde/z+FJb9USdxiYl2qdRyavkPx8b/Sq+0ZOOFdj5MAKRNJQuvaRp422z2MzRU7MVP00bWGPOpf5qHB+7RqHr+tCQG+Du1ZYtq22ZoETcweec+HUfkUp7B5BataU/fCnTZkPtJmTvcCy2B5PK6yd8zZSssUCli9M5VGB8qL/Jn/1nt5aWjOFEUE/sOvZdJJEWg8yxOc77PYrncHARi2AszAnnukZBhQfVtzGnu1A83jVjQHEOxAGKzSVWrMXRnRGi3RNwaWt5Lbp8nHADpwIZBN12qG4v5O8KWlT8enQIYi0li/0bIPqsdVKfSlJN6CplBuOBds2QnA5SZ0EL4KEWPay963XJBI7wRj+DDXhYV+n4wW7a8hRSb8Gp/GRJLvpRcLnzHlQTM40dfOzxD9e7kQ6dFdgZg5gr+5fLlL82RdYeqn+/5gviN9zPYBOeuFR4k/HrtEaFHJbipIZkgVU8a7IuBgiBkXjmjCasbSXTGD5pK1yaF1siMvW/DDOAZelxV15Kpf4+uDUOO+xUEWDqfXnfAtAWDEIZBgKuyFmsv+G9FJ+NJ4sC2WTWeS5lv28bM156xDoWuz4=
+  file:
+    - cross/pak-linux-amd64.md5
+    - cross/pak-windows-386.sha256
+    - cross/pak-linux-arm
+    - cross/pak-darwin-amd64.md5
+    - cross/pak-darwin-amd64
+    - cross/pak-solaris-amd64.md5
+    - cross/pak-linux-arm64.sha256
+    - cross/pak-linux-arm.sha256
+    - cross/pak-linux-386.sha256
+    - cross/pak-darwin-386.md5
+    - cross/pak-windows-386.md5
+    - cross/pak-freebsd-amd64.md5
+    - cross/pak-linux-arm64.md5
+    - cross/pak-linux-arm64
+    - cross/pak-freebsd-amd64.sha256
+    - cross/pak-freebsd-386.md5
+    - cross/pak-linux-amd64.sha256
+    - cross/pak-linux-386.md5
+    - cross/pak-freebsd-386
+    - cross/pak-solaris-amd64.sha256
+    - cross/pak-windows-amd64
+    - cross/pak-windows-amd64.md5
+    - cross/pak-windows-amd64.sha256
+    - cross/pak-linux-arm.md5
+    - cross/pak-darwin-386.sha256
+    - cross/pak-darwin-amd64.sha256
+    - cross/pak-windows-386
+    - cross/pak-solaris-amd64
+    - cross/pak-darwin-386
+    - cross/pak-linux-386
+    - cross/pak-freebsd-amd64
+    - cross/pak-freebsd-386.sha256
+    - cross/pak-linux-amd64
+  skip_cleanup: true
+  on:
+    repo: bronzdoc/pak

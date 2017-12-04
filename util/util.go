@@ -7,6 +7,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// ResolveEnvVar will resolve a given env var
 func ResolveEnvVar(userEnvVar string) (string, error) {
 	IsEnvVar, err := match(userEnvVar, `^\${.+}`)
 	if err != nil {

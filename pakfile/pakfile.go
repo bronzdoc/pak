@@ -12,6 +12,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// PakFile represents a Pakfile.json
 type PakFile struct {
 	ArtifactName string                            `json:"artifact_name"`
 	Path         string                            `json:"path"`
@@ -19,6 +20,7 @@ type PakFile struct {
 	Promote      map[string]map[string]interface{} `json:"promote"`
 }
 
+// Factory will create a new Pakfile will its necesary data
 func Factory() (*PakFile, error) {
 	var pakfile *PakFile
 	jsonPakfile := "Pakfile.json"
@@ -42,6 +44,7 @@ func Factory() (*PakFile, error) {
 	return pakfile, nil
 }
 
+// New will create a new Pakfile
 func New(jsonString []byte) *PakFile {
 	pakfile := PakFile{}
 
@@ -52,6 +55,7 @@ func New(jsonString []byte) *PakFile {
 	return &pakfile
 }
 
+// GetData will get the name, path and metadata of a Pakfile
 func (p *PakFile) GetData() error {
 	if err := p.GetArtifactName(); err != nil {
 		return errors.Wrap(err, "failed to get artifact name")
@@ -68,6 +72,7 @@ func (p *PakFile) GetData() error {
 	return nil
 }
 
+// GetMetadata will get a Pakfile metadata
 func (p *PakFile) GetMetadata() error {
 	if len(p.Metadata) <= 0 {
 		return nil
@@ -85,6 +90,7 @@ func (p *PakFile) GetMetadata() error {
 	return nil
 }
 
+// GetArtifactName will get a Pakfile artiface name
 func (p *PakFile) GetArtifactName() error {
 	// If artifact name is an env var, resolve it
 	newArtifactName, err := util.ResolveEnvVar(p.ArtifactName)
@@ -104,6 +110,7 @@ func (p *PakFile) GetArtifactName() error {
 	return nil
 }
 
+// GetPath will get a Pakfile path
 func (p *PakFile) GetPath() error {
 	// If path is an env var, resolve it
 	newPath, err := util.ResolveEnvVar(p.Path)

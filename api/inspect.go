@@ -11,6 +11,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Inspect inspects an artifact metadata
 func Inspect(packageName string, options map[string]interface{}) (string, error) {
 	const metadataFileName string = "pak.metadata"
 
@@ -72,14 +73,15 @@ func Inspect(packageName string, options map[string]interface{}) (string, error)
 			}
 
 			return string(metadata), nil
-		} else {
-			metadata, err := json.MarshalIndent(filteredMetadata, "", "  ")
-			if err != nil {
-				return "", errors.Wrap(err, "failded to marshal metadata")
-			}
-
-			return string(metadata), nil
 		}
+
+		metadata, err := json.MarshalIndent(filteredMetadata, "", "  ")
+		if err != nil {
+			return "", errors.Wrap(err, "failded to marshal metadata")
+		}
+
+		return string(metadata), nil
+
 	}
 
 	// Inspect all metadata
@@ -109,9 +111,9 @@ func Inspect(packageName string, options map[string]interface{}) (string, error)
 		}
 
 		return string(metadata), nil
-	} else {
-		return string(content), nil
 	}
+
+	return string(content), nil
 }
 
 func filterContentByLabel(metadata map[string]interface{}, label string) map[string]interface{} {

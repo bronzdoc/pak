@@ -8,6 +8,7 @@ import (
 	"github.com/jhoonb/archivex"
 )
 
+// Build builds an artifact from a Pakfile
 func Build(pakfile *pak.PakFile) {
 	artifact := new(archivex.TarFile)
 	artifact.Create(fmt.Sprintf("%s.tar", pakfile.ArtifactName))
