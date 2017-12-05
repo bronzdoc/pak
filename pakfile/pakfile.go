@@ -14,7 +14,7 @@ import (
 
 // PakFile represents a Pakfile.json
 type PakFile struct {
-	ArtifactName string                            `json:"artifact_name"`
+	ArtifactName string                            `json:"name"`
 	Path         string                            `json:"path"`
 	Metadata     map[string]string                 `json:"metadata"`
 	Promote      map[string]map[string]interface{} `json:"promote"`

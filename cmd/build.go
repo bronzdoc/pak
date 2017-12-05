@@ -12,7 +12,7 @@ import (
 // buildCmd represents the build command
 var buildCmd = &cobra.Command{
 	Use:   "build",
-	Short: "build a pak package",
+	Short: "Build an artifact",
 	Run: func(cmd *cobra.Command, args []string) {
 		pakfile, err := pakfile.Factory()
 		if err != nil {

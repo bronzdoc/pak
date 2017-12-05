@@ -14,7 +14,7 @@ var isKeyValFlag bool
 // inspectCmd represents the inspect command
 var inspectCmd = &cobra.Command{
 	Use:   "inspect",
-	Short: "inspect package metadata",
+	Short: "Inspect package metadata",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) <= 0 {
 			fmt.Println("inspect subcommand needs and argument <artifact>")
@@ -54,6 +54,6 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	inspectCmd.Flags().BoolVarP(&isKeyValFlag, "key-value", "", false, "sho inspect output as a KEY=VALUE pair")
+	inspectCmd.Flags().BoolVarP(&isKeyValFlag, "key-value", "", false, "Display inspect output as a KEY=VALUE pair")
 
 }

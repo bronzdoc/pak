@@ -13,7 +13,7 @@ var cfgFile string
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
 	Use:   "pak",
-	Short: "Metadata ready packages",
+	Short: "Build, inspect and promote artifacts with ease",
 }
 
 // Execute adds all child commands to the root command sets flags appropriately.
