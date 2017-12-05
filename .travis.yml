@@ -58,4 +58,4 @@ deploy:
     - cross/pak-linux-amd64
   skip_cleanup: true
   on:
-    repo: bronzdoc/pak
+    tags: true
