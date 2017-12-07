@@ -38,7 +38,9 @@ var _ = Describe("Build", func() {
 	})
 
 	It("should build a pak package", func() {
-		api.Build(pakFile)
+		out := api.Build(pakFile)
+		Expect(out).To(Equal(fmt.Sprintf("%s.tar", artifactName)))
+
 		_, err := os.Stat(fmt.Sprintf("%s.tar", artifactName))
 		Expect(os.IsNotExist(err)).To(Equal(false))
 	})

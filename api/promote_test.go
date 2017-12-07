@@ -55,12 +55,13 @@ var _ = Describe("Promote", func() {
 	})
 
 	It("should create a new artifact", func() {
-		err := api.Promote(
+		out, err := api.Promote(
 			fmt.Sprintf("%s.tar", artifactName),
 			map[string]interface{}{
 				"label": "rc",
 			})
 
+		Expect(out).To(Equal(fmt.Sprintf("%s.tar", promoteArtifactName)))
 		Expect(err).To(BeNil())
 
 		_, err = os.Stat(fmt.Sprintf("%s.tar", promoteArtifactName))
@@ -68,7 +69,7 @@ var _ = Describe("Promote", func() {
 	})
 
 	It("should create a pak.metadata inside the artifact", func() {
-		err := api.Promote(
+		_, err := api.Promote(
 			fmt.Sprintf("%s.tar", artifactName),
 			map[string]interface{}{
 				"label": "rc",

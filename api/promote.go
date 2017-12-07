@@ -14,13 +14,13 @@ import (
 )
 
 // Promote will promote the artifact to a given promote label
-func Promote(artifactName string, options map[string]interface{}) error {
+func Promote(artifactName string, options map[string]interface{}) (string, error) {
 	inspectOptions := map[string]interface{}{}
 
 	// get metadata
 	jsonMetadata, err := Inspect(artifactName, inspectOptions)
 	if err != nil {
-		return errors.Wrap(err, "failed to inspect artifact metadata")
+		return "", errors.Wrap(err, "failed to inspect artifact metadata")
 	}
 
 	var metadata map[string]interface{}
@@ -54,7 +54,7 @@ func Promote(artifactName string, options map[string]interface{}) error {
 		}
 
 		if err != nil {
-			return errors.Wrap(err, "failed to resolve env var")
+			return "", errors.Wrap(err, "failed to resolve env var")
 		}
 	}
 
@@ -66,8 +66,9 @@ func Promote(artifactName string, options map[string]interface{}) error {
 		newArtifactname = value.(string)
 	} // generate random name if name empty?
 
+	fullArtifactName := fmt.Sprintf("%s.tar", newArtifactname)
 	newArtifact := new(archivex.TarFile)
-	newArtifact.Create(fmt.Sprintf("%s.tar", newArtifactname))
+	newArtifact.Create(fullArtifactName)
 
 	// create new pak.metadata with the old data and the new one
 	jsonString, err := json.MarshalIndent(metadata, "", "  ")
@@ -81,7 +82,7 @@ func Promote(artifactName string, options map[string]interface{}) error {
 	// Add packaged files from the old artifact to the new one
 	pkg, err := os.Open(artifactName)
 	if err != nil {
-		return errors.Wrapf(err, "failed to open artifact %s", artifactName)
+		return "", errors.Wrapf(err, "failed to open artifact %s", artifactName)
 	}
 
 	tr := tar.NewReader(pkg)
@@ -94,12 +95,12 @@ func Promote(artifactName string, options map[string]interface{}) error {
 				break
 			}
 
-			return errors.Wrap(err, "could not get tar header")
+			return "", errors.Wrap(err, "could not get tar header")
 		}
 
 		fileContent, err := ioutil.ReadAll(tr)
 		if err != nil {
-			return errors.Wrapf(err, "could not read artifact %s", artifactName)
+			return "", errors.Wrapf(err, "could not read artifact %s", artifactName)
 		}
 
 		// Don't add metadata file since we will be adding a new one with new metadata
@@ -111,5 +112,5 @@ func Promote(artifactName string, options map[string]interface{}) error {
 
 	newArtifact.Close()
 
-	return nil
+	return fullArtifactName, nil
 }

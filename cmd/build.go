@@ -20,7 +20,8 @@ var buildCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		api.Build(pakfile)
+		fmt.Println(api.Build(pakfile))
+
 	},
 }
 

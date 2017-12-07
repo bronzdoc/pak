@@ -9,9 +9,10 @@ import (
 )
 
 // Build builds an artifact from a Pakfile
-func Build(pakfile *pak.PakFile) {
+func Build(pakfile *pak.PakFile) string {
 	artifact := new(archivex.TarFile)
-	artifact.Create(fmt.Sprintf("%s.tar", pakfile.ArtifactName))
+	fullArtifactName := fmt.Sprintf("%s.tar", pakfile.ArtifactName)
+	artifact.Create(fullArtifactName)
 
 	var metadataContent []byte
 
@@ -40,4 +41,6 @@ func Build(pakfile *pak.PakFile) {
 	artifact.AddAll(pakfile.Path, true)
 
 	artifact.Close()
+
+	return fullArtifactName
 }

@@ -29,11 +29,13 @@ var promoteCmd = &cobra.Command{
 			"label": label,
 		}
 
-		err := api.Promote(artifactName, options)
+		artifactName, err := api.Promote(artifactName, options)
 		if err != nil {
 			fmt.Printf("failed to promote %s: %s", artifactName, err)
 			os.Exit(1)
 		}
+
+		fmt.Println(artifactName)
 	},
 }
 
