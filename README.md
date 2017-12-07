@@ -126,7 +126,7 @@ $ pak inspect RELEASE-ARTIFACT.tar
 
 ### Binaries
 
-- **linux** [386](https://github.com/bronzdoc/pak/releases/download/v0.0.1/pak-linux-386) / [amd64](https://github.com/bronzdoc/pak/releases/download/v0.0.1/pak-linux-amd64) / [arm](https://github.com/bronzdoc/pak/releases/download/v0.0.1/pak-linux-arm) / [arm64](https://github.com/bronzdoc/pak/releases/download/v0.0.1/pak-linux-arm64)
-- **darwin** [386](https://github.com/bronzdoc/pak/releases/download/v0.0.1/pak-darwin-386) / [amd64](https://github.com/bronzdoc/pak/releases/download/v0.0.1/pak-darwin-amd64)
-- **freebsd** [386](https://github.com/bronzdoc/pak/releases/download/v0.0.1/pak-freebsd-386) / [amd64](https://github.com/bronzdoc/pak/releases/download/v0.0.1/pak-freebsd-amd64)
-- **windows** [386](https://github.com/bronzdoc/pak/releases/download/v0.0.1/pak-windows-386) / [amd64](https://github.com/bronzdoc/pak/releases/download/v0.0.1/pak-windows-amd64)
+- **linux** [386](https://github.com/bronzdoc/pak/releases/download/v0.1.0/pak-linux-386) / [amd64](https://github.com/bronzdoc/pak/releases/download/v0.1.0/pak-linux-amd64) / [arm](https://github.com/bronzdoc/pak/releases/download/v0.1.0/pak-linux-arm) / [arm64](https://github.com/bronzdoc/pak/releases/download/v0.1.0/pak-linux-arm64)
+- **darwin** [386](https://github.com/bronzdoc/pak/releases/download/v0.1.0/pak-darwin-386) / [amd64](https://github.com/bronzdoc/pak/releases/download/v0.1.0/pak-darwin-amd64)
+- **freebsd** [386](https://github.com/bronzdoc/pak/releases/download/v0.1.0/pak-freebsd-386) / [amd64](https://github.com/bronzdoc/pak/releases/download/v0.1.0/pak-freebsd-amd64)
+- **windows** [386](https://github.com/bronzdoc/pak/releases/download/v0.1.0/pak-windows-386) / [amd64](https://github.com/bronzdoc/pak/releases/download/v0.1.0/pak-windows-amd64)
